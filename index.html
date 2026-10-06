@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Research Methods in IT — Lectures 1–4 Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF1F5; --card:#FFFFFF; --ink:#18202E; --muted:#5A6476; --rule:#D5DFEF;
+  --margin:#C2453A; --accent:#2C4FA3; --accent-ink:#FFFFFF; --line:#C9D1DE;
+  --ok:#23784F; --ok-bg:#E4F2EA; --bad:#B3261E; --bad-bg:#FBE7E5; --chip:#E1E7F1;
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141922; --card:#1C2330; --ink:#E8ECF3; --muted:#9AA5B8; --rule:#2A3445;
+    --margin:#D8685D; --accent:#8FA9EE; --accent-ink:#121722; --line:#334056;
+    --ok:#6CC79A; --ok-bg:#183327; --bad:#F08A80; --bad-bg:#3A1E1D; --chip:#263043;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141922; --card:#1C2330; --ink:#E8ECF3; --muted:#9AA5B8; --rule:#2A3445;
+  --margin:#D8685D; --accent:#8FA9EE; --accent-ink:#121722; --line:#334056;
+  --ok:#6CC79A; --ok-bg:#183327; --bad:#F08A80; --bad-bg:#3A1E1D; --chip:#263043;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+main{max-width:700px;margin:0 auto;padding:40px 20px 64px}
+h1{font-family:var(--serif);font-weight:700;font-size:clamp(30px,6vw,44px);line-height:1.1;margin:0 0 10px;letter-spacing:-.01em}
+.lede{color:var(--muted);margin:0 0 32px;max-width:56ch}
+h2{font-family:var(--serif);font-weight:600;font-size:20px;margin:0 0 12px}
+.group{margin-bottom:28px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-size:15px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 14px;border-radius:999px;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.chip small{color:var(--muted);font-size:13px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip[aria-pressed="true"] small{color:inherit;opacity:.8}
+.hint{color:var(--muted);font-size:14px;margin:8px 0 0}
+.btn{font:inherit;font-weight:600;font-size:16px;border:0;border-radius:8px;padding:13px 22px;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* catalogue card */
+.card{position:relative;background:var(--card);border-radius:4px;padding:28px 24px 24px 44px;
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 31px,var(--rule) 31px,var(--rule) 32px);
+  background-position:0 60px;box-shadow:0 1px 0 var(--line),0 12px 30px -18px rgba(20,30,50,.35)}
+.card::before{content:"";position:absolute;top:0;bottom:0;left:28px;width:2px;background:var(--margin);opacity:.75}
+.callno{position:absolute;top:14px;right:18px;font-family:var(--serif);font-style:italic;color:var(--muted);font-size:14px}
+.qtext{font-family:var(--serif);font-size:clamp(19px,3.4vw,22px);line-height:1.45;margin:14px 0 22px;font-weight:600;max-width:58ch}
+.opts{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.opt{width:100%;text-align:left;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .k{flex:none;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:600;color:var(--muted)}
+.opt.sel{border-color:var(--accent);background:var(--chip)}
+.opt.sel .k{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.ok .k{background:var(--ok);border-color:var(--ok);color:var(--card)}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg)}
+.opt.bad .k{background:var(--bad);border-color:var(--bad);color:var(--card)}
+.opt:disabled{cursor:default}
+.expl{margin-top:18px;padding:14px 16px;border-radius:8px;background:var(--paper);font-size:15px}
+.expl b{font-family:var(--serif)}
+.topbar{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;color:var(--muted);font-size:14px}
+.bar{height:4px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:22px}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:10px}
+.linkish{font:inherit;background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;padding:6px 0}
+
+/* results */
+.score{font-family:var(--serif);font-weight:700;font-size:clamp(56px,14vw,96px);line-height:1;margin:0}
+.score span{font-size:.4em;color:var(--muted);font-weight:400}
+.verdict{font-family:var(--serif);font-size:20px;margin:8px 0 28px}
+.breakdown{display:grid;gap:10px;margin:0 0 32px}
+.bk{display:grid;grid-template-columns:120px 1fr 64px;gap:12px;align-items:center;font-size:14px}
+.bk .track{height:10px;background:var(--line);border-radius:6px;overflow:hidden}
+.bk .track i{display:block;height:100%;border-radius:6px}
+.bk .n{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.missed{display:grid;gap:14px;margin:12px 0 28px}
+.mi{background:var(--card);border-radius:6px;padding:16px 18px;border-left:3px solid var(--bad)}
+.mi p{margin:0 0 6px}
+.mi .q{font-family:var(--serif);font-weight:600}
+.mi .yours{color:var(--bad);font-size:14px}
+.mi .right{color:var(--ok);font-size:14px}
+.mi .why{color:var(--muted);font-size:14px;margin:0}
+.hidden{display:none !important}
+.foot{margin-top:40px;color:var(--muted);font-size:13px}
+@media (prefers-reduced-motion: reduce){*{transition:none !important}}
+@media (max-width:480px){.card{padding:26px 16px 20px 36px}.card::before{left:22px}.bk{grid-template-columns:80px 1fr 56px}}
+.casecard{margin-bottom:20px}
+.casecard h2{margin-top:10px}
+.casecard p{max-width:64ch;margin:0 0 12px;font-size:15.5px;line-height:1.6}
+.tablewrap{overflow-x:auto;margin:0 0 32px;background:var(--card);border-radius:6px}
+table.ev{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+table.ev th,table.ev td{border-bottom:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+table.ev th{font-family:var(--serif);font-weight:600;background:var(--paper)}
+table.ev td:first-child{font-weight:600;white-space:nowrap}
+.mq{background:var(--card);border-radius:6px;padding:20px 20px 18px;margin-bottom:18px;border-top:3px solid var(--accent)}
+.mq h3{font-family:var(--serif);font-size:18px;line-height:1.4;margin:0 0 4px}
+.mq .marks{color:var(--muted);font-size:13px;margin:0 0 12px}
+.mq textarea{width:100%;min-height:110px;font:inherit;font-size:15px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:10px 12px;resize:vertical}
+.mq .row{margin-top:10px}
+.model{margin-top:16px;padding:16px 18px;border-radius:6px;background:var(--paper);font-size:15px;line-height:1.6}
+.model h4{font-family:var(--serif);font-size:16px;margin:0 0 8px}
+.model p{margin:0 0 10px;max-width:66ch}
+.model ul{margin:0 0 10px;padding-left:20px}
+.model code{font-size:13.5px;background:var(--card);padding:8px 10px;border-radius:4px;display:block;white-space:pre-wrap;word-break:break-word}
+.checks{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:6px}
+.checks label{display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer}
+.checks input{margin-top:4px;accent-color:var(--ok)}
+.tally{font-size:14px;color:var(--muted);margin:6px 0 0}
+.midentry{margin-top:28px;padding:18px 20px;background:var(--card);border-radius:6px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.midentry p{margin:0;max-width:44ch}
+.midentry b{font-family:var(--serif);font-size:18px;display:block}
+</style>
+</head>
+<body>
+<main>
+<section id="setup">
+  <h1>Research Methods in IT</h1>
+  <p class="lede">Multiple-choice practice on Lectures 1–4: research paradigms, research questions and search, ethics and verification, literature review, and conceptual frameworks. Includes two past Moodle quiz variants.</p>
+
+  <div class="group">
+    <h2>Lectures</h2>
+    <div class="chips" id="lecChips"></div>
+  </div>
+  <div class="group">
+    <h2>Length</h2>
+    <div class="chips" id="lenChips"></div>
+  </div>
+  <div class="group">
+    <h2>Mode</h2>
+    <div class="chips" id="modeChips"></div>
+    <p class="hint" id="modeHint"></p>
+  </div>
+  <div class="row">
+    <button class="btn" id="startBtn">Start quiz</button>
+    <button class="btn ghost" id="pastBtn">Moodle quiz variant 1</button>
+    <button class="btn ghost" id="past2Btn">Moodle quiz variant 2</button>
+    <button class="btn ghost hidden" id="weakBtn"></button>
+  </div>
+  <div class="midentry"><p><b>Midterm practice</b>Written exam on the BreatheSmart asthma app case: 8 questions with model answers.</p><button class="btn" id="midBtn">Open midterm practice</button></div>
+  <p class="foot">Keys: 1–4 to choose, Enter for the next question. Options are shuffled every time.</p>
+</section>
+
+<section id="quiz" class="hidden">
+  <div class="topbar"><span id="progTxt"></span><span id="liveScore"></span></div>
+  <div class="bar"><i id="progBar" style="width:0"></i></div>
+  <article class="card" aria-live="polite">
+    <span class="callno" id="callno"></span>
+    <p class="qtext" id="qtext"></p>
+    <ul class="opts" id="opts"></ul>
+    <div class="expl hidden" id="expl"></div>
+  </article>
+  <div class="nav">
+    <button class="linkish" id="quitBtn">End quiz</button>
+    <button class="btn" id="nextBtn" disabled>Next question</button>
+  </div>
+</section>
+
+<section id="results" class="hidden">
+  <p class="score" id="scoreBig"></p>
+  <p class="verdict" id="verdict"></p>
+  <h2>By lecture</h2>
+  <div class="breakdown" id="breakdown"></div>
+  <div id="missedWrap">
+    <h2 id="missedTitle"></h2>
+    <div class="missed" id="missed"></div>
+  </div>
+  <div class="row">
+    <button class="btn" id="retryBtn">Retry missed questions</button>
+    <button class="btn ghost" id="newBtn">New quiz</button>
+  </div>
+</section>
+<section id="midterm" class="hidden">
+  <button class="linkish" id="midBack">Back to quizzes</button>
+  <h1>Midterm practice: BreatheSmart case</h1>
+  <p class="lede">Read the case, write your own answer to each question, then open the model answer and tick off what your answer covered. Your drafts stay in this browser.</p>
+
+  <article class="card casecard">
+    <span class="callno">Case</span>
+    <h2>BreatheSmart Asthma Support App</h2>
+    <p>A university clinic is considering BreatheSmart, a mobile app for students aged 18 to 25 with physician-diagnosed asthma. The app sends controller-medication reminders and personalised air-quality warnings based on phone location. It records whether reminders are opened, while students enter missed doses and symptoms.</p>
+    <p>The proposed eight-week study would recruit 80 volunteers. One group would receive the app and the other would receive the clinic's standard information sheet. Planned data include app logs, self-reported missed doses, a weekly validated symptom-control score, baseline asthma severity and digital-literacy score.</p>
+    <p>The team currently calls the project "Artificial Intelligence in Healthcare" and asks, "Does technology improve asthma?" They also write, "The app will definitely improve patients' health." The literature folder contains several records suggested by a generative AI tool, but some records have no DOI and have not been opened. The app would collect location data continuously unless the participant changes the default setting.</p>
+    <p>Use these summaries as the literature base. No external knowledge about asthma is expected.</p>
+  </article>
+
+  <div class="tablewrap">
+  <table class="ev">
+    <thead><tr><th>Evidence</th><th>Design and sample</th><th>Main finding</th><th>Limitation</th></tr></thead>
+    <tbody>
+      <tr><td>Study A</td><td>Randomised study; 180 adults aged 30 to 60, 12 weeks</td><td>Medication reminders increased recorded adherence. The difference in symptom control was small and not statistically significant.</td><td>Adherence was self-reported. The age group differs from the proposed student sample.</td></tr>
+      <tr><td>Study B</td><td>Observational app study; 1,200 users</td><td>Frequent app users had better symptom-control scores than infrequent users.</td><td>Users chose how often to use the app. Baseline asthma severity was not adequately controlled.</td></tr>
+      <tr><td>Study C</td><td>Qualitative interviews with 24 university students who have asthma</td><td>Students valued local air-quality alerts, but privacy concerns and notification fatigue caused some to disable location tracking.</td><td>Small qualitative sample. It explains experience but does not estimate an intervention effect.</td></tr>
+      <tr><td>Study D</td><td>Systematic review of 21 digital asthma studies</td><td>Results were mixed. Studies used inconsistent definitions of adherence, different outcome measures and short follow-up periods.</td><td>Few studies focused on people aged 18 to 25. Attrition was common.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div id="midQs"></div>
+</section>
+</main>
+<script>
+// a: correct option is always index 0 here; options are shuffled at runtime
+const Q = [
+// ---------- Lecture 1 ----------
+{l:"L1",q:"Which definition of research does Lecture 1 quote from the Oxford English Dictionary?",o:["The systematic study of materials and sources in order to establish facts and reach new conclusions","Any activity that helps a person make a better personal decision","The statistical testing of hypotheses using numerical data","Reading published literature to summarise what is already known"],e:"OED: research is the systematic study of materials and sources to establish facts and reach new conclusions. Everyday 'research' (choosing a car) lacks this systematic, knowledge-producing aim."},
+{l:"L1",q:"Ontology is best described as…",o:["The study of what exists and how existing things are understood and categorised","The rules for how we come to have legitimate knowledge","The plan for collecting and analysing data","The study of ethical behaviour in research"],e:"Ontology = what is real / what exists. Epistemology = how we come to know it."},
+{l:"L1",q:"Epistemology is concerned with…",o:["How we come to have legitimate knowledge of the world (rules for knowing)","What exists in the world independently of us","Which statistical test fits the data","How to categorise research tools"],e:"Epistemology answers 'how do I know?' — e.g. how I came to believe in God or adopt my morals."},
+{l:"L1",q:"'The external world exists independently of perception — the truth is out there whether we see it or not.' Which position is this?",o:["Realism","Relativism","Subjectivism","Social constructionism"],e:"Realism holds that reality exists independently of our perception of it."},
+{l:"L1",q:"Which position holds that all knowledge is limited to what can be observed through the senses, and is the cornerstone of scientific method?",o:["Empiricism","Positivism","Realism","Relativism"],e:"Empiricism = knowledge from the senses. Positivism goes further: all TRUE knowledge is scientific."},
+{l:"L1",q:"'All true knowledge is scientific, and is best pursued by scientific method.' This describes…",o:["Positivism","Empiricism","Subjectivism","Social constructionism"],e:"Positivism. Scientific research was born of positivism and adopted its assumptions."},
+{l:"L1",q:"Which position claims there are no universals and that truth, morals and culture can only be understood in their own socio-historic context?",o:["Relativism","Realism","Positivism","Empiricism"],e:"Relativism rejects universals; meaning depends on context."},
+{l:"L1",q:"Theories emphasising that the world is constructed by human beings as they interact and interpret belong to…",o:["Social constructionism","Realism","Empiricism","Positivism"],e:"Social constructionism: reality is built through human interaction and interpretation."},
+{l:"L1",q:"Which position accepts personal experiences as the foundation for factual knowledge?",o:["Subjectivism","Relativism","Positivism","Realism"],e:"Subjectivism emphasises the subjective elements of experience as the basis of knowledge."},
+{l:"L1",q:"The quantitative approach is often tied to which set of assumptions?",o:["Realism, empiricism and positivism","Relativism, social constructionism and subjectivism","Postmodernism and relativism","No assumptions at all"],e:"Quantitative ↔ realism/empiricism/positivism. Qualitative ↔ relativism/social constructionism/subjectivism."},
+{l:"L1",q:"According to Lecture 1, how does the mixed approach treat qualitative and quantitative data?",o:["Both are valued independently of ontological or epistemological assumptions","Quantitative data always takes priority","Qualitative data is used only to illustrate statistics","Each type must match one fixed paradigm"],e:"Mixed approach: both data types are valued independently of ontological/epistemological assumptions."},
+{l:"L1",q:"Which is better, quantitative or qualitative research?",o:["Neither — a strategy is good to the degree it fits the research question","Quantitative, because it is objective","Qualitative, because it is richer","Mixed, in every case"],e:"There is no 'best type'. The researcher, not the methodology, matches procedures to the question."},
+{l:"L1",q:"Ethnography, action research and the scientific method are examples of…",o:["Methodologies","Methods","Tools","Paradigms of analysis"],e:"Methodology = macro-level framework with principles of reasoning. Ethnography, action research, scientific method."},
+{l:"L1",q:"Interviewing, surveying and observation are examples of…",o:["Methods","Methodologies","Tools","Ontologies"],e:"Methods = micro-level techniques to collect and analyse data."},
+{l:"L1",q:"A questionnaire or an interview schedule is an example of a…",o:["Tool","Method","Methodology","Methodological design"],e:"Tools = devices used to collect data: questionnaires, observation checklists, interview schedules."},
+{l:"L1",q:"Which statement reflects a POST-positivist assumption?",o:["The world is ambiguous and variable; findings can be idiographic and qualitative","The world is knowable and predictable","Researchers must be objective experts","Findings must be statistically significant"],e:"Post-positivists accept ambiguity, intuitive/holistic research, subjective/collaborative researchers, inductive methods and qualitative findings."},
+{l:"L1",q:"Which is NOT listed as a potential of research in Lecture 1?",o:["Prove a theory with absolute certainty","Find workable solutions","Evaluate success of change strategies","Offer robust recommendations"],e:"The five potentials: understand issues, find solutions, work towards the solution, evaluate success, offer recommendations."},
+{l:"L1",q:"Why must a researcher engage with the 'isms' and 'ologies'?",o:["Because producing knowledge requires declaring your position on knowledge","Because examiners require philosophical vocabulary","Because only positivist research is accepted","Because it replaces the need for methods"],e:"As a knowledge producer you must 'put your cards on the table' and articulate your positioning."},
+
+// ---------- Lecture 2 ----------
+{l:"L2",q:"Which question is the strongest starting point for a study?",o:["How does retrieval augmentation affect factual accuracy in a campus-service chatbot?","How can AI improve education?","Is machine learning useful?","Can I build a better chatbot?"],e:"It names a factor (retrieval augmentation), outcome (factual accuracy) and context (campus-service chatbot)."},
+{l:"L2",q:"'Reported performance may not hold on imbalanced, newly collected URLs.' In topic → problem → question, this statement is the…",o:["Problem","Topic","Question","Objective"],e:"Topic = area; problem = unresolved issue; question = the investigation."},
+{l:"L2",q:"Which is NOT one of the five tests for a strong research question?",o:["Original","Clear","Feasible","Analytical"],e:"The five tests: Clear, Focused, Researchable, Feasible, Analytical."},
+{l:"L2",q:"'Time, data and skills fit' describes which test?",o:["Feasible","Researchable","Focused","Clear"],e:"Feasible = realistic for your time, data and skills. Researchable = evidence can answer it."},
+{l:"L2",q:"'Evidence can answer it' describes which test?",o:["Researchable","Analytical","Feasible","Focused"],e:"Researchable. An interesting question can still fail if no accessible evidence can answer it."},
+{l:"L2",q:"What is the 'fast check' for a research question?",o:["What evidence would change your answer?","How many papers cite this topic?","Is the topic trending?","Can it be answered with yes or no?"],e:"If no evidence could change the answer, the question isn't researchable."},
+{l:"L2",q:"'How is factor X associated with outcome Y?' follows which question pattern?",o:["Relate","Compare","Evaluate","Explain"],e:"Relate = association (e.g. usage and retention)."},
+{l:"L2",q:"'To what extent does artifact A improve Y?' follows which pattern?",o:["Evaluate","Relate","Compare","Explain"],e:"Evaluate is used for systems or interfaces."},
+{l:"L2",q:"'How do users experience or interpret X?' follows which pattern?",o:["Explain","Evaluate","Compare","Relate"],e:"Explain is used for human behaviour and experience."},
+{l:"L2",q:"How does a research objective differ from a research question?",o:["The question asks; the objective states the research action, often with evaluation criteria","The objective is broader than the question","The objective lists the hypotheses","They describe different studies"],e:"Both must describe the same study (same factor, outcome, population, boundary). The objective adds the action."},
+{l:"L2",q:"Which verb is most suitable for a main research objective?",o:["Compare","Understand","Learn","Know"],e:"Use compare, evaluate, examine, measure, identify. Avoid alone: understand, know, explore, learn, study."},
+{l:"L2",q:"In a Boolean query, OR should be used…",o:["Within a synonym group to expand results","Between different concepts to narrow results","To exclude unwanted terms","Only in Google Scholar"],e:"OR expands within a synonym group; AND narrows between concept groups."},
+{l:"L2",q:"What does AND do in a search?",o:["Narrows — both concepts must appear","Expands — either term may appear","Excludes a term","Searches an exact phrase"],e:"Pattern: (synonym OR synonym) AND (synonym OR synonym)."},
+{l:"L2",q:"Why should NOT be used with caution?",o:["It can remove relevant papers whose abstracts mention the excluded term","It is unsupported by all databases","It always returns zero results","It turns the query into a phrase search"],e:"e.g. phishing NOT email may drop useful papers that merely mention email."},
+{l:"L2",q:"What does detect* do in a query?",o:["Captures word endings such as detect, detection, detecting","Keeps the word as an exact phrase","Excludes the word detect","Searches only the title field"],e:"The asterisk is a wildcard (when supported by the database)."},
+{l:"L2",q:"What is the purpose of quotation marks, e.g. \"machine learning\"?",o:["Keep a phrase together","Control operator precedence","Capture word endings","Exclude a term"],e:"Quotes = phrase; parentheses = logic; wildcard = endings."},
+{l:"L2",q:"Should you search the full research question as a sentence?",o:["No — extract 2–4 searchable concepts and their synonyms","Yes — it gives the most precise results","Yes, but only in Scopus","Only if the question is short"],e:"Turn the question into concepts like METHOD, TASK, DATA, CONDITION."},
+{l:"L2",q:"What is the correct order of the query ladder?",o:["Broad → Balanced → Precise","Precise → Balanced → Broad","Balanced → Broad → Precise","Broad → Precise → Balanced"],e:"Broad learns vocabulary; balanced adds synonym groups; precise targets the method. Record all three."},
+{l:"L2",q:"Your search returns too FEW results. What is the recommended fix?",o:["Remove the narrowest concept or add synonyms","Add another concept with AND","Add a field restriction","Change the topic"],e:"Too many → add concept/phrase/field restriction. Too few → remove narrowest concept or add synonyms."},
+{l:"L2",q:"Why search metadata first in IEEE Xplore?",o:["It reduces accidental matches from the full text","It is the only field IEEE supports","It returns more results","It ignores Boolean operators"],e:"Metadata (title, abstract, index terms) first, then expand to full text if needed."},
+{l:"L2",q:"In IEEE Xplore, how should Boolean operators be written?",o:["In UPPERCASE, with parentheses grouping OR terms","In lowercase","With commas between terms","Operators are not supported"],e:"UPPERCASE operators; OR groups in parentheses run before AND."},
+{l:"L2",q:"What is the 'live rule' for running searches in Scopus?",o:["Change one search decision at a time","Apply all filters at once","Aim for exactly 100 results","Sort by citations first"],e:"Changing one thing at a time shows what each decision costs."},
+{l:"L2",q:"Assignment 1 requires searching at least how many academic databases?",o:["Two","One","Three","Five"],e:"At least two academic databases — don't rely on a single platform."},
+{l:"L2",q:"Which database is described as best for 'Cited by', related articles and versions?",o:["Google Scholar","IEEE Xplore","ACM Digital Library","Scopus"],e:"Google Scholar = broad discovery and citation chaining; verify the source record before citing."},
+{l:"L2",q:"What is the correct order of screening layers?",o:["Title → Abstract → Record → Full text","Full text → Abstract → Title → Record","Record → Title → Full text → Abstract","Abstract → Title → Full text → Record"],e:"Screen in layers before downloading everything. Citation count can't replace relevance."},
+{l:"L2",q:"Which is NOT a required Search Log field?",o:["Number of citations of each paper","Exact query","Filters","Result count"],e:"Fields: database, date, exact query, filters, result count, screening decision and notes."},
+{l:"L2",q:"When should inclusion criteria be written?",o:["Before screening","After selecting the final papers","Only if the supervisor asks","After writing the literature review"],e:"Write criteria before screening; record changes after every meaningful query."},
+
+// ---------- Lecture 3 ----------
+{l:"L3",q:"A student adds imaginary survey responses to reach the planned sample size. This is…",o:["Fabrication","Falsification","Plagiarism","Gift authorship"],e:"Fabrication = inventing data, participants, results or references that never existed."},
+{l:"L3",q:"A team tests six models and reports only the best run; the other runs remain saved. This is…",o:["Falsification","Fabrication","Plagiarism","No issue"],e:"Nothing was invented, but selective reporting distorts the record. Falsification includes misleading omission."},
+{l:"L3",q:"How should the 'six models, best run only' case be repaired?",o:["Report mean and variation across runs, use the same evaluation set, define the primary metric in advance","Delete the other five runs","Report only the worst run for balance","Add more models until one wins clearly"],e:"Define the reporting rule before choosing the result; document any excluded run."},
+{l:"L3",q:"Presenting someone else's method or dataset as your own is…",o:["Plagiarism","Falsification","Fabrication","Duplication"],e:"Plagiarism covers words, ideas, code, images and data — not only copied text."},
+{l:"L3",q:"Adding a name to a paper without a defensible contribution is called…",o:["Gift authorship","Duplication","Cherry-picking","Hidden limits"],e:"Gift (honorary) authorship misrepresents responsibility."},
+{l:"L3",q:"Describing a small convenience sample as representative is which questionable practice?",o:["Hidden limits","Cherry-picking","Duplication","Fabrication"],e:"QRPs: cherry-picking, hidden limits, duplication, gift authorship."},
+{l:"L3",q:"What is the 'disclosure test' for questionable practices?",o:["Would a reasonable reader make a different decision if this were disclosed?","Would the supervisor approve it?","Is it legal?","Did anyone notice?"],e:"If disclosure would change a reader's decision, hiding it misleads."},
+{l:"L3",q:"A researcher removes three low scores 'because they look wrong' after seeing the results. When is this acceptable?",o:["Only under a pre-defined exclusion rule and if they are genuine errors","Always, if the scores are outliers","Never under any circumstance","Whenever it improves the result"],e:"Removing inconvenient results after seeing them distorts the study."},
+{l:"L3",q:"According to Lecture 3, research bias is managed by…",o:["Making decisions visible (before, during and after)","Pretending to be fully neutral","Avoiding any prior expectations","Using only quantitative data"],e:"Before: state expectations. During: decision log. After: report exceptions and limitations."},
+{l:"L3",q:"'Informed consent is a process, not a signature.' Which stage is NOT one of the four?",o:["Publish","Understand","Withdraw","Ask"],e:"Understand → Choose → Withdraw → Ask. Consent must match what will actually happen to the data."},
+{l:"L3",q:"Interview files are labelled P07, and a separate key links P07 to a name. The data are…",o:["Confidential but not anonymous","Anonymous","Neither confidential nor anonymous","Public"],e:"The team can still identify P07, so it is confidentiality, not anonymity."},
+{l:"L3",q:"Do pseudonyms create anonymity?",o:["No — they reduce exposure but do not automatically create anonymity","Yes, always","Only for online data","Only if participants agree"],e:"Anonymity requires that identity cannot be reasonably linked to the response."},
+{l:"L3",q:"In the data lifecycle, what should you collect?",o:["Only what the research question needs","Everything available, in case it is useful later","Only anonymous data","Only data from public sources"],e:"Collect → Store → Access → Retain → Delete/Share. Never promise a protection your workflow can't deliver."},
+{l:"L3",q:"Which is an operational (good) safeguard?",o:["Audio stored in an encrypted university folder, access limited to two named members, key stored separately","We will keep the data safe","Data will be handled responsibly","Only trustworthy people will see the data"],e:"A safeguard must be specific enough to perform and verify."},
+{l:"L3",q:"Which is NOT one of the four checks for online research?",o:["Popularity of the platform","Expectations of users","Sensitivity / re-identification risk","Platform terms"],e:"Four checks: expectations, sensitivity, platform terms, presentation. Public ≠ ethically simple."},
+{l:"L3",q:"Your study changes after ethics approval. What should you do?",o:["Report it and seek an amendment before proceeding","Continue; approval covers all changes","Restart without telling anyone","Only mention it in the final report"],e:"Change after approval → report → seek amendment."},
+{l:"L3",q:"What is the difference between source verification and evaluation?",o:["Verification answers existence; evaluation answers quality and relevance","They are the same thing","Verification checks method quality; evaluation checks the DOI","Evaluation is done before verification"],e:"A real paper can be weak; an impressive citation can be fabricated."},
+{l:"L3",q:"What can a DOI NOT prove?",o:["That the method is sound","That the work resolves to a stable record","That metadata match","That versions can be distinguished"],e:"A DOI is an identifier, not a quality badge. It cannot prove method, ethics, relevance or absence of correction."},
+{l:"L3",q:"Step 3 of the verification ladder (Read → Match → ? → Check → Open) is…",o:["Resolve the DOI or Crossref metadata","Cite the paper","Import into Mendeley","Count citations"],e:"Read, Match (publisher/repository), Resolve (DOI/Crossref), Check (corrections/retractions), Open (method and results)."},
+{l:"L3",q:"A source has no DOI but has a stable publisher record. Can it be cited?",o:["Yes — a missing DOI is not a missing source","No — only DOI sources are valid","Only if it is a book","Only after one year"],e:"Legitimate works may lack a DOI; what matters is a stable, traceable record."},
+{l:"L3",q:"Replacing a few words while keeping the source's sentence structure is…",o:["Patchwriting","Paraphrasing","Synthesis","Quoting"],e:"Patchwriting may happen while learning but is not acceptable final prose."},
+{l:"L3",q:"Combining two or more sources to make a new analytical point (agreement, contrast, gap) is…",o:["Synthesis","Paraphrase","Patchwriting","Quotation"],e:"Synthesis creates a relationship between sources; a literature review is organised by ideas, not papers."},
+{l:"L3",q:"Does a good paraphrase still need a citation?",o:["Yes — the idea still belongs to the source","No — new wording makes it yours","Only if more than one sentence","Only in APA style"],e:"Paraphrase = new structure and language, same idea, WITH citation."},
+{l:"L3",q:"Someone provided equipment access and language editing but no intellectual contribution. They should be…",o:["Acknowledged","Listed as an author","Listed as corresponding author","Ignored"],e:"Authorship = meaningful contribution + responsibility. Other support goes in acknowledgements."},
+{l:"L3",q:"Disclosing a conflict of interest…",o:["Lets readers evaluate the context; it is not an accusation","Means the research is invalid","Is only needed for funded research","Is optional if results are positive"],e:"Funding, employment, relationships or ownership that may influence judgement must be disclosed."},
+{l:"L3",q:"Which AI use is defensible according to Lecture 3?",o:["Generating search-term candidates","Citing a source the AI suggested without opening it","Fabricating missing results","Uploading participant data to an unapproved tool"],e:"Defensible: search terms, explaining terms, grammar after authorship, challenging arguments, suggesting checks."},
+{l:"L3",q:"Which is part of the AI 'verification contract'?",o:["No generated reference enters the paper until opened","AI text never needs disclosure","AI may fill gaps in data","AI citations are verified automatically"],e:"No source, No claim, No secret data, No hidden role."},
+{l:"L3",q:"'Reference manager ≠ source verifier' means…",o:["Mendeley reproduces wrong metadata perfectly, so you must check records yourself","Mendeley cannot insert citations","Mendeley only works with DOIs","Reference managers detect fake papers"],e:"Automation saves time only after the record is clean."},
+{l:"L3",q:"What is the correct order of the Mendeley workflow?",o:["Import → Verify → Organise → Read → Cite","Cite → Import → Read → Verify → Organise","Read → Cite → Import → Organise → Verify","Organise → Import → Cite → Verify → Read"],e:"Import, verify metadata, organise (collections, tags, notes), read and annotate, cite in Word."},
+
+// ---------- Lecture 4.1 ----------
+{l:"L4.1",q:"Grey literature is material that…",o:["Does not have an ISBN or ISSN","Is peer reviewed","Is older than ten years","Is only published online"],e:"Grey literature: conference papers, unpublished theses, newspaper articles, pamphlets/brochures."},
+{l:"L4.1",q:"Which is an example of grey literature?",o:["An unpublished research thesis","A peer-reviewed journal article","A textbook with an ISBN","A journal issue with an ISSN"],e:"Recent theses and conference papers can be valuable sources of contemporary original work."},
+{l:"L4.1",q:"Why are journal articles central to literature reviews?",o:["They target academic audiences, are generally peer reviewed and are relevant and current","They are always free","They are longer than books","They never need quality assessment"],e:"Peer review means they meet at least some benchmark for credibility."},
+{l:"L4.1",q:"Why is the most contemporary research more likely in journals than in books?",o:["Books have a lengthy production time","Books are not peer reviewed","Books are grey literature","Books cannot be cited"],e:"Books are useful for background, theory and method, but are slower to publish."},
+{l:"L4.1",q:"A literature review is defined as…",o:["A critical and purposive review of a body of knowledge including findings and theoretical and methodological contributions","A list of all papers on a topic","A summary of abstracts in chronological order","An analysis of policy documents as data"],e:"It is argumentative writing that creates a 'space' for your research."},
+{l:"L4.1",q:"Which is NOT one of the three purposes of a formal literature review?",o:["Replace the need for primary data collection","Inform readers of developments in the field","Establish researcher credibility","Argue the need for and relevance of the study"],e:"The review informs, establishes credibility and argues need (identifies gaps)."},
+{l:"L4.1",q:"You analyse policy documents and legislation as evidence. Where does this belong?",o:["In the method and findings, not the literature review","In the literature review","In the abstract only","In the appendix only"],e:"A literature review is not a document analysis. Documents as data = method."},
+{l:"L4.1",q:"An annotated bibliography is…",o:["A list of citations with a brief descriptive and evaluative paragraph on relevance, accuracy and quality","A list of references in APA style","A literature review chapter","A table of search results"],e:"Annotations are for your own use and save rereading time later."},
+{l:"L4.1",q:"In academic reviewing, 'critical' means…",o:["Informed and considered evaluation","Finding as many faults as possible","Rejecting old research","Summarising neutrally"],e:"Ask: what did I really think of that and why? New, old, rehash, method flaws?"},
+{l:"L4.1",q:"Which is NOT one of the elements of an annotation?",o:["A full copy of the results table","Author/audience","Critical appraisal","Relevance"],e:"Elements: citation, author/audience, summary, critical appraisal, relevance."},
+{l:"L4.1",q:"How should you quickly assess the relevance of a journal article?",o:["Read the abstract or executive summary","Read the full methods section","Count its citations","Check the journal's impact factor"],e:"For books: table of contents, blurb, introduction, chapter conclusions."},
+{l:"L4.1",q:"In the sticky-note ranking system, a '3' means…",o:["Highly relevant","Minimally relevant","Somewhat relevant","Not relevant"],e:"1 = minimally, 2 = somewhat, 3 = highly relevant."},
+{l:"L4.1",q:"Which question helps assess the QUALITY of a journal article?",o:["Can the research be audited or verified?","Is it on the first page of Google?","Is the title catchy?","Is it longer than 10 pages?"],e:"Also: subjectivities managed? logical methods? consistent? relevant arguments?"},
+{l:"L4.1",q:"Under Australian fair dealing for study, how much of a book may you copy?",o:["5% or one chapter","10% or two chapters","The whole book if you own it","Nothing at all"],e:"Also: one article per journal issue, one conference paper, short pieces under 10 pages."},
+{l:"L4.1",q:"Listing a source in the bibliography but not citing it in the text is…",o:["A form of plagiarism listed in the lecture","Acceptable practice","Required in APA style","Only a formatting error"],e:"The lecture's plagiarism list includes mentioning a source in the bibliography but not referencing it in text."},
+{l:"L4.1",q:"What is the Google Scholar tip for finding journal articles when you don't know journal names?",o:["Type 'journal' in the Publication box","Sort by oldest first","Search only titles","Use the NOT operator"],e:"This cuts out many extraneous hits. Access through your university for full text."},
+{l:"L4.1",q:"Which experts does Lecture 4.1 recommend calling on?",o:["University librarians and academics","Only online forums","Only classmates","Publishers' sales staff"],e:"Librarians (often subject specialists) and academics; also ResearchGate/Academia.edu."},
+{l:"L4.1",q:"The literature review process is described as…",o:["Ongoing and cyclical — the review and the question/theory/methods shape each other","Done once, after data collection","Done once, before choosing the topic","Independent of the research question"],e:"A literature review is a moving target that evolves with the study."},
+{l:"L4.1",q:"To focus (narrow) a literature review, you can…",o:["Add relevant variables or limit to studies from the past 5–7 years","Remove all variables","Increase the time span","Use only books"],e:"Expanding means limiting/modifying variables and/or increasing the time span."},
+{l:"L4.1",q:"What is the final step (15) of the writing process?",o:["Use the literature to back up your own arguments","Compile citations with abstracts","Place terms in a Venn diagram","Read good reviews"],e:"Each paragraph should make a point that is backed up by the literature."},
+{l:"L4.1",q:"Which bibliographic software is mentioned in Lecture 4.1?",o:["EndNote","Jupyter","Tableau","Trello"],e:"ProCite, Mendeley, EndNote, Reference Manager — they format references in Harvard, APA, Vancouver etc."},
+
+// ---------- Lecture 4.2 ----------
+{l:"L4.2",q:"What is the difference between a literature review and a conceptual framework?",o:["The review says what others found; the framework shows which factors your study examines and how they relate","They are the same","The framework is a list of sources","The review comes after data collection"],e:"The framework is the bridge between reading literature and choosing a design."},
+{l:"L4.2",q:"Which is NOT one of the three jobs of a conceptual framework?",o:["Decorate the proposal","Explain","Select","Predict"],e:"Explain, Select, Predict. It is an argument, not a decorative diagram."},
+{l:"L4.2",q:"'Usability → perceived ease-of-use score → mean of six survey items.' The 'mean of six survey items' is the…",o:["Indicator","Construct","Variable","Mediator"],e:"Construct (abstract idea) → variable (defined characteristic) → indicator (actual measurement)."},
+{l:"L4.2",q:"Trust and cognitive load are examples of…",o:["Constructs","Indicators","Count variables","Controls"],e:"Constructs are abstract; they need a variable definition and an indicator before data collection."},
+{l:"L4.2",q:"Task difficulty is included because harder tasks increase completion time regardless of assistant use. Its role is…",o:["Control variable","Predictor","Outcome","Mediator"],e:"A control represents a plausible alternative influence and must have a reason to be in the model."},
+{l:"L4.2",q:"Prior programming skill influences BOTH assistant use and completion time. It is a…",o:["Confounder","Mediator","Outcome","Indicator"],e:"A confounder can produce a convincing but misleading association between X and Y."},
+{l:"L4.2",q:"Assistant use lowers cognitive load, which then reduces completion time. Cognitive load is a…",o:["Mediator","Moderator","Confounder","Control"],e:"Mediator = mechanism (how/why)."},
+{l:"L4.2",q:"The effect of assistant use on completion time is stronger for beginners than for experts. Prior skill is a…",o:["Moderator","Mediator","Outcome","Indicator"],e:"Moderator = condition (when/for whom); it changes strength or direction."},
+{l:"L4.2",q:"Confidence measured as low / medium / high is which variable type?",o:["Ordinal","Categorical","Continuous","Count"],e:"Ordinal = ordered categories with uncertain spacing."},
+{l:"L4.2",q:"The number of commits is which variable type?",o:["Count","Ordinal","Categorical","Continuous"],e:"Count = events recorded as whole numbers (errors, commits, incidents)."},
+{l:"L4.2",q:"Operating system used (Windows/macOS/Linux) is which variable type?",o:["Categorical","Ordinal","Continuous","Count"],e:"Categorical = groups with no numeric distance."},
+{l:"L4.2",q:"A strong operational definition names…",o:["The measure, unit, data source and observation conditions","Only the construct name","The hypothesis direction","The literature source"],e:"e.g. minutes from receiving the task to passing all unit tests, logged by the platform."},
+{l:"L4.2",q:"What supports an arrow in a conceptual model?",o:["Repeated evidence from prior studies plus a reasoned mechanism","Visual preference","A significant result in your own data","The supervisor's opinion alone"],e:"Neither evidence nor mechanism alone is enough; and it still doesn't guarantee the result in a new context."},
+{l:"L4.2",q:"With cross-sectional observational data, which wording is appropriate?",o:["X is associated with Y","X causes Y","X changes Y","X determines Y"],e:"Causal language requires a design that addresses alternative explanations."},
+{l:"L4.2",q:"Who developed the Technology Acceptance Model, and when?",o:["Davis, 1989","Kerr, 1998","Baron & Kenny, 1986","Pearl, 2000"],e:"Davis (1989, MIS Quarterly) validated scales for perceived usefulness and ease of use."},
+{l:"L4.2",q:"In TAM, perceived ease of use (PEOU)…",o:["Predicts acceptance and also supports perceived usefulness","Is the outcome variable","Is unrelated to usefulness","Moderates user age"],e:"PU and PEOU predict acceptance; PEOU → PU."},
+{l:"L4.2",q:"Which paper stressed that mediator and moderator must not be used interchangeably?",o:["Baron & Kenny (1986)","Davis (1989)","Kerr (1998)","O'Leary (2017)"],e:"The distinction changes the argument, data needs and analysis plan."},
+{l:"L4.2",q:"When is a non-directional hypothesis the honest choice?",o:["When evidence supports a difference but conflicting results don't justify a direction","Always, because it is safer","Never, it is weak writing","Only for qualitative studies"],e:"A stronger (directional) prediction needs stronger justification."},
+{l:"L4.2",q:"A study finds a non-significant result. What can you conclude?",o:["It does not prove that no effect exists","The variables are unrelated in every context","The hypothesis was false everywhere","The null hypothesis is proven true"],e:"Low power, noisy measurement or a small effect may explain it. Report estimate, uncertainty and design."},
+{l:"L4.2",q:"The null hypothesis represents…",o:["No relationship or no difference in the statistical test","The researcher's expected relationship","The mediator path","The moderator effect"],e:"The research hypothesis belongs to the conceptual argument; the null belongs to the test logic."},
+{l:"L4.2",q:"Why is 'AI improves education' a weak hypothesis?",o:["Variables, population, outcome and evidence are undefined, so almost any result fits","It is too long","It is directional","It uses the word AI"],e:"Test of falsifiability: can you describe a result that would fail to support it?"},
+{l:"L4.2",q:"H4: 'Prior skill moderates the relationship between assistant use and completion time.' Testing it requires…",o:["An interaction analysis","Another simple correlation","A mediation test only","No analysis — it is descriptive"],e:"Moderation = interaction. H2 + H3 together divide the mediating process."},
+{l:"L4.2",q:"A stopwatch gives consistent readings but is always started at the wrong moment. The measure is…",o:["Reliable but not valid","Valid but not reliable","Both reliable and valid","Neither reliable nor valid"],e:"Reliability = consistency; validity = measuring the intended thing."},
+{l:"L4.2",q:"Triangulation means…",o:["Combining evidence sources that each answer a different part of the question","Collecting as much data as possible","Using three hypotheses","Repeating the same survey three times"],e:"Self-report (perceptions), behavioural logs (actions), performance tasks (outcomes)."},
+{l:"L4.2",q:"Which weakness belongs to self-report data?",o:["Affected by memory and response style","Cannot record timing","Only measures controlled tasks","Cannot capture perceptions"],e:"Logs can't explain reasons; performance tasks may not represent everyday use."},
+{l:"L4.2",q:"HARKing stands for…",o:["Hypothesizing After the Results are Known","Hypothesis Analysis with Reliable Knowledge","Holding All Results Known","Hypothesis And Research Key"],e:"Named by Kerr (1998). Fix: record dated hypotheses before analysis; report surprises as exploratory."},
+{l:"L4.2",q:"What are the three rules for a useful research diagram?",o:["Nodes, arrows, boundaries","Colours, shapes, legends","Inputs, outputs, feedback","Title, axis, scale"],e:"Each node = one defined variable; each arrow = justified direction; boundaries = this study only."},
+{l:"L4.2",q:"How many variables should the Week 4 framework contain?",o:["Three to five","One","Ten or more","Exactly two"],e:"A clear three-variable model beats a ten-variable diagram you can't measure."},
+];
+// ---------- Past Moodle quiz ----------
+Q.push(
+{l:"PQ",q:"Which question checks whether a research question is researchable?",o:["Can evidence be collected to answer the question?","Is the topic popular on social media?","Has the researcher already decided the answer?","Is the question longer than two sentences?"],e:"Researchable means evidence can answer it. An interesting question still fails if no accessible evidence exists."},
+{l:"PQ",q:"Which sequence best represents the research process introduced in Lecture 1?",o:["Problem → Research Question → Evidence → Answer","Tool → Method → Topic → Guess","Answer → Evidence → Problem → Question","Topic → Answer → Opinion → Search"],e:"Research starts from a problem, turns it into a question, gathers evidence, and only then reaches an answer."},
+{l:"PQ",q:"Which item is included in the Assignment 1 feasibility check?",o:["Whether the required data can realistically be obtained","Whether the paper has already been accepted","Whether the researcher can avoid citing literature","Whether all findings are statistically significant"],e:"Feasible = time, data and skills fit. If you can't realistically get the data, the study can't be done."},
+{l:"PQ",q:"What is epistemology mainly concerned with?",o:["How we can know something and what counts as valid knowledge or evidence","How many participants are required in every study","Which programming language is fastest","How software is deployed"],e:"Epistemology = how we know (rules for knowing). Ontology = what exists."},
+{l:"PQ",q:"In Practical Session 1, what does a research area represent?",o:["The broad field of study","A final statistical result","A list of references","A specific research limitation"],e:"Area/topic = the broad field. It narrows to a problem, then a specific question."},
+{l:"PQ",q:"Why is accurate citation important in academic research?",o:["It shows where ideas and evidence came from","It makes the paper visually longer","It removes the need to evaluate sources","It guarantees that the hypothesis is correct"],e:"Citations give traceability: readers can find and check your sources. They don't replace evaluating those sources."},
+{l:"PQ",q:"According to the lecture, how should a researcher choose a method?",o:["Choose the method that fits the research question","Choose the easiest available software tool","Always choose qualitative methods","Always choose quantitative methods"],e:"There is no 'best' type of research; a method is good to the degree it fits the question."},
+{l:"PQ",q:"What does a DOI establish by itself?",o:["A persistent identifier for a registered research object","That the paper is relevant","That the method is strong","That the paper has never been corrected"],e:"A DOI is an identifier, not a quality badge. It can't prove relevance, sound method or absence of correction."},
+{l:"PQ",q:"What should an evidence matrix help researchers identify?",o:["Patterns, agreements and contradictions across studies","Only the authors' affiliations","Only the number of pages in each paper","Only citation formatting errors"],e:"The matrix supports synthesis: comparing sources to find patterns, agreements, contradictions and gaps."},
+{l:"PQ",q:"In Practical Session 2, what should students do before searching for papers?",o:["Break the problem into core searchable concepts and generate synonyms","Choose findings before reading literature","Paste the entire problem statement into a regular Google search","Write the final conclusion"],e:"Never search the full question as a sentence. Extract 2–4 concepts, add synonyms, combine with OR and AND."},
+{l:"PQ",q:"A researcher invents twelve survey responses to reach the target sample size. This is:",o:["Fabrication","Falsification","Paraphrasing","Anonymisation"],e:"Inventing data = fabrication. Falsification is distorting or selectively reporting REAL data."},
+{l:"PQ",q:"Which action best demonstrates informed consent?",o:["Providing the purpose, tasks, risks and data use before participation","Promising that every study has no risk","Collecting data first and explaining later","Asking all participants to agree as a group before the study"],e:"Informed consent: each person understands purpose, tasks, risks and data use, then chooses individually and voluntarily."}
+);
+// ---------- Moodle quiz variant 2 ----------
+Q.push(
+{l:"PQ2",q:"What is epistemology mainly concerned with?",o:["How knowledge is justified and what counts as evidence","How statistical models are tested against observed measurements","How reality is structured independently of human knowledge","How research tools are selected for data collection"],e:"Epistemology = how we know and what counts as evidence. 'How reality is structured independently of us' is ontology (realism)."},
+{l:"PQ2",q:"Which of the following can be considered possible evidence for a research idea?",o:["An experiment, dataset, interview, or systematic observation collected purposefully","A broad research area without a defined data source","A personal belief supported only by the researcher's experience","A proposed project title without observations or collected records"],e:"Evidence is data collected purposefully and systematically. Beliefs, areas and titles are not evidence."},
+{l:"PQ2",q:"After importing a PDF into Mendeley or Zotero, what should the student do next?",o:["Verify title, authors, year, venue, pages, and DOI","Add unrelated tags before checking bibliographic information","Delete the publisher record after downloading the article PDF","Assume imported metadata is complete and entirely accurate"],e:"Import → Verify. A reference manager is not a source verifier; it repeats wrong metadata in every citation."},
+{l:"PQ2",q:"Participants consented to classroom research, but the researcher now wants to upload raw transcripts to a public AI tool. What is the best action?",o:["Check consent, ethics approval, and data policy; use an authorised secure tool","Ask the AI provider to promise that uploaded data will remain confidential","Upload the transcripts because the original consent covers every analytical tool","Remove names only and assume that participant re-identification is impossible"],e:"Consent must match what actually happens to the data. 'No secret data' rule: no participant data in unapproved tools. Removing names ≠ anonymity."},
+{l:"PQ2",q:"Why are quotation marks used around \"machine learning\" in many databases?",o:["They retrieve words together as an exact phrase","They translate the phrase into other database languages","They remove the phrase from the search results","They restrict the phrase to article titles only"],e:"Quotes = exact phrase. Removing a term is NOT; restricting to titles is a field search."},
+{l:"PQ2",q:"Which item belongs in a Search Log?",o:["Exact query, database, date, filters, result count, and decision","Final titles and authors of only the included papers","Copied abstracts from every result returned by the database","Names and versions of software installed on the researcher's computer"],e:"The Search Log makes the search repeatable: database, date, exact query, filters, results, screening decision."},
+{l:"PQ2",q:"Which action best demonstrates informed consent?",o:["Explain purpose, tasks, risks, data use, and voluntary withdrawal","Promise that participation has no possible risk or inconvenience","Collect responses first, then explain the study after analysis","Let one participant provide consent for the entire sample"],e:"Understand → Choose → Withdraw → Ask. Each person consents individually, before participating."},
+{l:"PQ2",q:"Which of the following is an information-search question rather than a research question?",o:["What is Python used for in programming?","How does Python instruction affect novice debugging performance?","Which factors influence hallucinations in code-generating models?","Why do beginners abandon Python-based learning applications?"],e:"An information-search question already has a known answer you can look up. A research question needs evidence and analysis to answer something unresolved."},
+{l:"PQ2",q:"Which source is described as a broad, free starting point for academic searching?",o:["Google Scholar","ACM Digital Library","Scopus database","IEEE Xplore"],e:"Google Scholar is free and broad (cited by, related articles). Scopus is subscription-based; ACM and IEEE are computing-specific."},
+{l:"PQ2",q:"Which characteristic is expected of the main research question?",o:["Clear, focused, and answerable using relevant evidence","Already resolved before the research process begins","Broad, comprehensive, and covering an entire discipline","Based primarily on the researcher's personal assumptions"],e:"Five tests: clear, focused, researchable, feasible, analytical."},
+{l:"PQ2",q:"What are mixed methods?",o:["Integrating quantitative and qualitative evidence within one study","Writing a literature review before conducting an experiment","Comparing two databases during an academic literature search","Combining two programming languages within one research prototype"],e:"Mixed approach uses both quantitative and qualitative data in one study."},
+{l:"PQ2",q:"An AI tool provides a title, authors, and DOI, but the publisher record lists different authors. What should the researcher do?",o:["Treat the mismatch as a warning and verify authoritative bibliographic metadata","Use the AI citation because the DOI appears structurally valid","Correct the authors using another response from the same AI","Cite both versions so the paper avoids choosing between conflicting records"],e:"Verification ladder: match against the publisher record and resolve the DOI. The publisher/Crossref record is authoritative, not the AI."},
+{l:"PQ2",q:"Which statement best distinguishes research from ordinary information search?",o:["Research analyses evidence to answer an unresolved question","Research collects sources without evaluating evidence or assumptions","Research finds summaries that answer an already familiar question","Research repeats existing explanations without producing new insight"],e:"Research produces new knowledge by analysing evidence; information search finds what is already known."},
+{l:"PQ2",q:"A database search returns many irrelevant results. What should the researcher do first?",o:["Inspect results to identify which concept creates irrelevant matches","Replace the research topic before reviewing any retrieved records","Apply every available filter without diagnosing the search problem","Select the first ten records and stop the search"],e:"Diagnose before changing: find which term causes noise, then change one decision at a time. (Question stem reconstructed — the original was cut off.)"},
+{l:"PQ2",q:"Which practice helps protect confidential research data?",o:["Restrict access to authorised members of the research team","Publish identifiable raw responses with the final article","Share account passwords among all collaborating researchers","Store research files in a publicly accessible shared folder"],e:"Data lifecycle: Access = named people and roles only."}
+);
+
+// ---------- Midterm practice (written) ----------
+const MID = [
+{n:1, q:"Name one development output and one research output in this case.",
+ model:`<p><b>Development output:</b> the BreatheSmart mobile app itself, with its medication-reminder and location-based air-quality warning features (and the logging that records whether reminders are opened).</p>
+<p><b>Research output:</b> evidence from the eight-week comparison, for example a report of whether weekly symptom-control scores and missed doses differ between the app group and the information-sheet group.</p>
+<p>Why: building the app is engineering work; the research output is new knowledge that answers a question with evidence.</p>`,
+ check:["Named the app (or its features) as the development output","Named findings/evidence from the study as the research output","Kept the two clearly separate"]},
+
+{n:2, q:"Write a three-part problem statement containing the current situation, a literature-supported limitation and the need for this study.",
+ model:`<p><b>Current situation.</b> The university clinic currently gives students aged 18 to 25 with physician-diagnosed asthma a standard information sheet, and is considering BreatheSmart, an app that combines controller-medication reminders with location-based air-quality warnings.</p>
+<p><b>Limitation in the literature.</b> Existing evidence does not show whether such an app improves symptom control in this group. Reminders increased recorded adherence in a randomised study, but the symptom-control difference was small and non-significant, adherence was self-reported, and participants were aged 30 to 60 (Study A). Better scores among frequent users come from an observational design without adequate control of baseline severity (Study B), and a review of 21 studies reports mixed results, inconsistent adherence definitions and few studies of people aged 18 to 25 (Study D).</p>
+<p><b>Need.</b> A controlled comparison is needed in university students aged 18 to 25 that measures symptom control with a validated score and records adherence consistently, so the clinic can decide whether the app adds value over the standard information sheet.</p>`,
+ check:["Current situation names population, clinic practice and the app","Limitation cites at least one study (A, B or D) and states a specific weakness","Need links the gap to this study and population","Avoids 'the app will definitely improve health'"]},
+
+{n:3, q:"Write one clear, focused, researchable and feasible question for the proposed study. Include the population, factor or comparison, and outcome.",
+ model:`<p>"Among university students aged 18 to 25 with physician-diagnosed asthma, how does eight weeks of BreatheSmart use, compared with the clinic's standard information sheet, affect weekly validated symptom-control scores?"</p>
+<ul><li><b>Population:</b> students aged 18–25 with physician-diagnosed asthma</li>
+<li><b>Factor / comparison:</b> BreatheSmart app vs standard information sheet</li>
+<li><b>Outcome:</b> weekly validated symptom-control score</li>
+<li><b>Boundary:</b> eight weeks</li></ul>
+<p>It replaces the vague "Does technology improve asthma?", which has no defined population, factor or measurable outcome. It is feasible with 80 volunteers and the planned data.</p>`,
+ check:["Population stated (18–25, physician-diagnosed asthma)","Comparison stated (app vs information sheet)","One measurable outcome (e.g. validated symptom-control score)","Neutral wording, not assuming the result"]},
+
+{n:4, q:"List three concept groups and at least one synonym or variant for each group.",
+ model:`<ul><li><b>Condition:</b> asthma, asthmatic, "asthma control"</li>
+<li><b>Intervention / technology:</b> "mobile app", "mobile application", mHealth, smartphone, "digital health", reminder*</li>
+<li><b>Outcome:</b> "medication adherence", adherence, compliance, "symptom control"</li></ul>
+<p>Optional fourth group (population): "university students", "young adults", "college students". Keep it out of the balanced search at first, because Study D shows few studies of this age group and it would cut recall.</p>`,
+ check:["Three distinct concepts (e.g. condition, technology, outcome)","At least one synonym or variant for each","Synonyms are true alternatives, not related topics"]},
+
+{n:5, q:"Write one balanced search string using quotation marks, parentheses, AND and OR.",
+ model:`<code>(asthma OR asthmatic) AND ("mobile app" OR "mobile application" OR mHealth OR smartphone) AND ("medication adherence" OR compliance OR "symptom control" OR "asthma control")</code>
+<p>OR joins synonyms inside each bracket, AND joins the concept groups, and quotation marks keep phrases together. It is "balanced" because it uses synonym groups for the main concepts without yet adding the narrow population term.</p>`,
+ check:["Uses quotation marks for at least one phrase","Uses parentheses to group synonyms","OR inside groups, AND between groups","No NOT, and the question is not pasted as a sentence"]},
+
+{n:6, q:"Identify two ethical or data-protection risks in the case. For each risk, propose one specific safeguard and name the evidence or record that would show the safeguard was applied.",
+ model:`<h4>Risk 1: continuous location tracking by default</h4>
+<p>Location is collected continuously unless participants change the setting, which is sensitive and can identify where a student lives or studies. Study C also reports privacy concerns.</p>
+<p><b>Safeguard:</b> make location opt-in (off by default), collect it only when an air-quality alert is generated, and store it only at district level, not exact coordinates.</p>
+<p><b>Evidence:</b> a consent form with a separate opt-in box for location, plus the app configuration record showing the default is off.</p>
+<h4>Risk 2: identifiable health data</h4>
+<p>Missed doses, symptoms and asthma severity are health data linked to named students.</p>
+<p><b>Safeguard:</b> replace names with participant codes, store the name–code key separately, keep data in an encrypted university-approved folder accessible only to two named researchers, and delete after the stated retention period.</p>
+<p><b>Evidence:</b> the approved data management plan and ethics approval letter, plus the folder's access log.</p>
+<p><i>Also acceptable:</i> unopened AI-suggested references with no DOI (integrity risk). Safeguard: verify each record against the publisher page or Crossref and exclude unresolved ones; evidence: a verification log.</p>`,
+ check:["Two distinct risks named","Each safeguard is operational (who, what, where), not 'keep data safe'","Each safeguard has a named record (consent form, ethics approval, DMP, access log, verification log)"]},
+
+{n:7, q:"Write a short analytical paragraph that compares the four evidence summaries. Organise the paragraph by findings, methods or limitations, not as four separate mini-summaries.",
+ model:`<p>The evidence suggests that digital asthma support can change medication-taking behaviour, but its effect on health outcomes remains uncertain. Reminders increased recorded adherence in a randomised study, yet symptom control improved only slightly and not significantly (Study A), while a review of 21 studies found mixed results overall (Study D). The more positive finding, that frequent users had better symptom-control scores (Study B), comes from a weaker design: users chose how often to use the app and baseline severity was not adequately controlled, so healthier or more motivated users may explain the difference. Measurement also limits comparison, since adherence was self-reported in Study A and defined inconsistently across the reviewed studies (Study D). Qualitative interviews add that students valued air-quality alerts but sometimes disabled location tracking because of privacy concerns and notification fatigue (Study C), suggesting that engagement may weaken any benefit. Across the evidence, people aged 18 to 25 are under-represented and attrition was common (Studies A and D).</p>`,
+ check:["Organised by idea (outcome vs behaviour, design strength, measurement, age), not A then B then C then D","Compares studies directly (agreement, contrast)","Notes the observational weakness of Study B","Uses Study C for experience, not as proof of effect","Every claim cites a study letter"]},
+
+{n:8, q:"State one genuine gap that follows from the evidence. Explain why the proposed study could address it without claiming that \"no research exists.\"",
+ model:`<p><b>Gap:</b> there is limited controlled evidence on whether an app combining medication reminders and air-quality alerts improves validated symptom control among people aged 18 to 25. The only randomised evidence involves adults aged 30 to 60 with self-reported adherence (Study A), the positive association comes from an uncontrolled observational design (Study B), and the review reports few studies of this age group and inconsistent adherence definitions (Study D).</p>
+<p><b>How the study addresses it:</b> it compares the app with the standard information sheet in students aged 18 to 25, uses a weekly validated symptom-control score, records reminder opening through app logs alongside self-reported missed doses, and measures baseline severity and digital literacy so they can be controlled. Allocating participants randomly would strengthen the comparison.</p>
+<p>The wording ("limited", "few studies") acknowledges that related research exists and defines the gap precisely.</p>`,
+ check:["Gap is specific (age group + outcome + design), not 'no research exists'","Supported by at least two studies","Explains which design features of the proposed study fill the gap","Hedged language: limited, few, uncertain"]},
+];
+
+function midKey(n){ return "rm14-mid-"+n; }
+function midGet(n){ try{ return JSON.parse(localStorage.getItem(midKey(n))||"{}"); }catch(e){ return {}; } }
+function midSet(n,v){ try{ localStorage.setItem(midKey(n), JSON.stringify(v)); }catch(e){} }
+
+function renderMid(){
+  const wrap=$("midQs"); wrap.innerHTML="";
+  MID.forEach(m=>{
+    const st=midGet(m.n);
+    const box=document.createElement("div"); box.className="mq";
+    box.innerHTML=`<h3></h3><p class="marks">Question ${m.n} of ${MID.length}</p><textarea aria-label="Your answer to question ${m.n}" placeholder="Write your answer here first"></textarea><div class="row"><button class="btn ghost" type="button">Show model answer</button></div><div class="model hidden"></div>`;
+    box.querySelector("h3").textContent=`${m.n}. ${m.q}`;
+    const ta=box.querySelector("textarea"); ta.value=st.text||"";
+    ta.addEventListener("input",()=>{ const s=midGet(m.n); s.text=ta.value; midSet(m.n,s); });
+    const btn=box.querySelector("button"); const md=box.querySelector(".model");
+    md.innerHTML=m.model+`<h4>Did your answer include…</h4><ul class="checks"></ul><p class="tally"></p>`;
+    const ul=md.querySelector(".checks"); const tally=md.querySelector(".tally");
+    const ticks=st.ticks||[];
+    const upd=()=>{ const c=[...ul.querySelectorAll("input")].filter(i=>i.checked).length; tally.textContent=`${c} of ${m.check.length} points covered`; };
+    m.check.forEach((c,ci)=>{
+      const li=document.createElement("li"); li.innerHTML=`<label><input type="checkbox"><span></span></label>`;
+      li.querySelector("span").textContent=c;
+      const cb=li.querySelector("input"); cb.checked=!!ticks[ci];
+      cb.onchange=()=>{ const s=midGet(m.n); s.ticks=s.ticks||[]; s.ticks[ci]=cb.checked; midSet(m.n,s); upd(); };
+      ul.appendChild(li);
+    });
+    upd();
+    const toggle=(open)=>{ md.classList.toggle("hidden",!open); btn.textContent=open?"Hide model answer":"Show model answer"; };
+    if(st.open) toggle(true);
+    btn.onclick=()=>{ const open=md.classList.contains("hidden"); toggle(open); const s=midGet(m.n); s.open=open; midSet(m.n,s); };
+    wrap.appendChild(box);
+  });
+}
+
+const LECTURES = [
+  {id:"L1", name:"L1 Research paradigms"},
+  {id:"L2", name:"L2 Questions & search"},
+  {id:"L3", name:"L3 Ethics & verification"},
+  {id:"L4.1", name:"L4.1 Literature review"},
+  {id:"L4.2", name:"L4.2 Frameworks & hypotheses"},
+  {id:"PQ", name:"Moodle quiz variant 1"},
+  {id:"PQ2", name:"Moodle quiz variant 2"},
+];
+const LENGTHS = [10,20,40,"All"];
+const MODES = [
+  {id:"practice", name:"Practice", hint:"See the answer and explanation after every question."},
+  {id:"exam", name:"Exam", hint:"No feedback until the end, like the real midterm."},
+];
+Q.forEach((q,i)=>q.id=i);
+
+const S = { lecs:new Set(LECTURES.map(l=>l.id)), len:20, mode:"practice", items:[], i:0, answers:[], done:false };
+const $ = id => document.getElementById(id);
+
+// weak-question memory (per viewer)
+function loadWeak(){ try{ return new Set(JSON.parse(localStorage.getItem("rm14-weak")||"[]")); }catch(e){ return new Set(); } }
+function saveWeak(s){ try{ localStorage.setItem("rm14-weak", JSON.stringify([...s])); }catch(e){} }
+let weak = loadWeak();
+
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function countFor(id){ return Q.filter(q=>q.l===id).length; }
+
+function chip(label, pressed, onClick, small){
+  const b=document.createElement("button"); b.className="chip"; b.type="button";
+  b.setAttribute("aria-pressed", pressed?"true":"false");
+  b.textContent=label; if(small){const s=document.createElement("small"); s.textContent=small; b.appendChild(s);}
+  b.onclick=onClick; return b;
+}
+function renderSetup(){
+  const lc=$("lecChips"); lc.innerHTML="";
+  LECTURES.forEach(l=>lc.appendChild(chip(l.name, S.lecs.has(l.id), ()=>{ S.lecs.has(l.id)?S.lecs.delete(l.id):S.lecs.add(l.id); renderSetup(); }, countFor(l.id))));
+  const pool = Q.filter(q=>S.lecs.has(q.l)).length;
+  const ln=$("lenChips"); ln.innerHTML="";
+  LENGTHS.forEach(n=>ln.appendChild(chip(n==="All"?`All (${pool})`:String(n), S.len===n, ()=>{S.len=n; renderSetup();})));
+  const mc=$("modeChips"); mc.innerHTML="";
+  MODES.forEach(m=>mc.appendChild(chip(m.name, S.mode===m.id, ()=>{S.mode=m.id; renderSetup();})));
+  $("modeHint").textContent = MODES.find(m=>m.id===S.mode).hint;
+  $("startBtn").disabled = pool===0;
+  const wb=$("weakBtn");
+  weak = new Set([...weak].filter(id=>Q[id]));
+  if(weak.size){ wb.classList.remove("hidden"); wb.textContent=`Practise my weak questions (${weak.size})`; } else wb.classList.add("hidden");
+}
+
+function start(ids){
+  S.items = ids.map(id=>{ const q=Q[id]; return { id, order: shuffle([0,1,2,3]) }; });
+  S.i=0; S.answers=new Array(S.items.length).fill(null); S.done=false;
+  show("quiz"); renderQ();
+}
+function startFromSetup(){
+  let pool = shuffle(Q.filter(q=>S.lecs.has(q.l)).map(q=>q.id));
+  if(S.len!=="All") pool = pool.slice(0,S.len);
+  start(pool);
+}
+function show(id){ ["setup","quiz","results","midterm"].forEach(s=>$(s).classList.toggle("hidden", s!==id)); window.scrollTo(0,0); }
+
+function renderQ(){
+  const it=S.items[S.i], q=Q[it.id], ans=S.answers[S.i];
+  const n=S.items.length;
+  $("progTxt").textContent = `Question ${S.i+1} of ${n}`;
+  const answered = S.answers.filter(a=>a!==null).length;
+  const correct = S.answers.filter((a,k)=>a!==null && a===0).length;
+  $("liveScore").textContent = S.mode==="practice" && answered ? `${correct} correct so far` : "";
+  $("progBar").style.width = `${(S.i/n)*100}%`;
+  $("callno").textContent = q.l;
+  $("qtext").textContent = q.q;
+  const ul=$("opts"); ul.innerHTML="";
+  const reveal = S.mode==="practice" && ans!==null;
+  it.order.forEach((oi,pos)=>{
+    const li=document.createElement("li"); const b=document.createElement("button");
+    b.className="opt"; b.type="button";
+    b.innerHTML=`<span class="k">${pos+1}</span><span></span>`;
+    b.lastChild.textContent=q.o[oi];
+    if(reveal){ b.disabled=true; if(oi===0) b.classList.add("ok"); else if(oi===ans) b.classList.add("bad"); }
+    else if(ans===oi) b.classList.add("sel");
+    b.onclick=()=>choose(oi);
+    li.appendChild(b); ul.appendChild(li);
+  });
+  const ex=$("expl");
+  if(reveal){
+    ex.classList.remove("hidden");
+    ex.innerHTML = `<b>${ans===0?"Correct.":"Not quite."}</b> <span></span>`;
+    ex.lastChild.textContent = q.e;
+  } else ex.classList.add("hidden");
+  const nb=$("nextBtn");
+  nb.disabled = ans===null;
+  nb.textContent = S.i===n-1 ? "See results" : "Next question";
+}
+function choose(oi){
+  const it=S.items[S.i];
+  if(S.mode==="practice" && S.answers[S.i]!==null) return;
+  S.answers[S.i]=oi;
+  if(S.mode==="practice") record(it.id, oi===0);
+  renderQ();
+}
+function record(id, ok){ if(ok) weak.delete(id); else weak.add(id); saveWeak(weak); }
+function next(){
+  if(S.answers[S.i]===null) return;
+  if(S.i < S.items.length-1){ S.i++; renderQ(); } else finish();
+}
+function finish(){
+  if(S.mode==="exam") S.items.forEach((it,k)=>{ if(S.answers[k]!==null) record(it.id, S.answers[k]===0); });
+  S.done=true;
+  const answeredIdx = S.items.map((_,k)=>k).filter(k=>S.answers[k]!==null);
+  const total = answeredIdx.length;
+  const correct = answeredIdx.filter(k=>S.answers[k]===0).length;
+  const pct = total? Math.round(correct/total*100):0;
+  $("scoreBig").innerHTML = `${correct}<span> / ${total}</span>`;
+  $("verdict").textContent = total===0 ? "No questions answered." :
+    pct>=90 ? `${pct}% — exam-ready on these topics.` :
+    pct>=75 ? `${pct}% — solid. Review the misses below.` :
+    pct>=50 ? `${pct}% — getting there. Re-read the notes for the weaker lectures.` :
+              `${pct}% — go back to the notes, then retry the missed questions.`;
+  const bd=$("breakdown"); bd.innerHTML="";
+  LECTURES.forEach(l=>{
+    const ks = answeredIdx.filter(k=>Q[S.items[k].id].l===l.id);
+    if(!ks.length) return;
+    const c = ks.filter(k=>S.answers[k]===0).length, p=c/ks.length;
+    const row=document.createElement("div"); row.className="bk";
+    const col = p>=.75?"var(--ok)":p>=.5?"var(--accent)":"var(--bad)";
+    row.innerHTML=`<span>${l.id}</span><span class="track"><i style="width:${Math.max(p*100,2)}%;background:${col}"></i></span><span class="n">${c}/${ks.length}</span>`;
+    bd.appendChild(row);
+  });
+  const missedK = answeredIdx.filter(k=>S.answers[k]!==0);
+  const ms=$("missed"); ms.innerHTML="";
+  $("missedTitle").textContent = missedK.length ? `Missed questions (${missedK.length})` : "No missed questions";
+  missedK.forEach(k=>{
+    const q=Q[S.items[k].id]; const d=document.createElement("div"); d.className="mi";
+    const p=(cls,txt)=>{const e=document.createElement("p"); e.className=cls; e.textContent=txt; return e;};
+    d.appendChild(p("q", `${q.l}  ${q.q}`));
+    d.appendChild(p("yours", `Your answer: ${q.o[S.answers[k]]}`));
+    d.appendChild(p("right", `Correct: ${q.o[0]}`));
+    d.appendChild(p("why", q.e));
+    ms.appendChild(d);
+  });
+  $("retryBtn").classList.toggle("hidden", !missedK.length);
+  $("retryBtn").onclick = ()=> start(shuffle(missedK.map(k=>S.items[k].id)));
+  show("results");
+}
+
+$("startBtn").onclick = startFromSetup;
+$("weakBtn").onclick = ()=> start(shuffle([...weak]));
+$("pastBtn").onclick = ()=> start(Q.filter(q=>q.l==="PQ").map(q=>q.id));
+$("past2Btn").onclick = ()=> start(Q.filter(q=>q.l==="PQ2").map(q=>q.id));
+$("nextBtn").onclick = next;
+$("quitBtn").onclick = ()=>{ if(S.answers.some(a=>a!==null)) finish(); else { show("setup"); renderSetup(); } };
+$("newBtn").onclick = ()=>{ show("setup"); renderSetup(); };
+document.addEventListener("keydown", e=>{
+  if($("quiz").classList.contains("hidden")) return;
+  if(["1","2","3","4"].includes(e.key)){ const it=S.items[S.i]; const oi=it.order[+e.key-1]; if(oi!==undefined) choose(oi); }
+  else if(e.key==="Enter"){ e.preventDefault(); next(); }
+});
+$("midBtn").onclick=()=>{ renderMid(); show("midterm"); };
+$("midBack").onclick=()=>{ show("setup"); renderSetup(); };
+renderSetup();
+</script>
+</body>
+</html>
